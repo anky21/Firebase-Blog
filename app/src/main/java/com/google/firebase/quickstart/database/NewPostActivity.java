@@ -24,9 +24,7 @@ public class NewPostActivity extends BaseActivity {
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
 
-    // [START declare_database_ref]
     private DatabaseReference mDatabase;
-    // [END declare_database_ref]
 
     private EditText mTitleField;
     private EditText mBodyField;
@@ -37,9 +35,7 @@ public class NewPostActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
-        // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END initialize_database_ref]
 
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
@@ -73,7 +69,6 @@ public class NewPostActivity extends BaseActivity {
         setEditingEnabled(false);
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
 
-        // [START single_value_read]
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -82,7 +77,6 @@ public class NewPostActivity extends BaseActivity {
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
 
-                        // [START_EXCLUDE]
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
@@ -97,18 +91,14 @@ public class NewPostActivity extends BaseActivity {
                         // Finish this Activity, back to the stream
                         setEditingEnabled(true);
                         finish();
-                        // [END_EXCLUDE]
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // [START_EXCLUDE]
                         setEditingEnabled(true);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END single_value_read]
     }
 
     private void setEditingEnabled(boolean enabled) {
@@ -121,7 +111,6 @@ public class NewPostActivity extends BaseActivity {
         }
     }
 
-    // [START write_fan_out]
     private void writeNewPost(String userId, String username, String title, String body) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
@@ -135,5 +124,4 @@ public class NewPostActivity extends BaseActivity {
 
         mDatabase.updateChildren(childUpdates);
     }
-    // [END write_fan_out]
 }
