@@ -101,6 +101,13 @@ public class RecentPostsFragment extends Fragment {
                 });
             }
         };
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                mRecycler.scrollToPosition(positionStart);
+            }
+        });
         mRecycler.setAdapter(mAdapter);
     }
 
