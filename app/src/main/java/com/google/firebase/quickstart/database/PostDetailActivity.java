@@ -39,7 +39,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private CommentAdapter mAdapter;
 
     private TextView mAuthorView;
-    private TextView mTitleView;
     private TextView mBodyView;
     private EditText mCommentField;
     private Button mCommentButton;
@@ -64,7 +63,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Initialize Views
         mAuthorView = (TextView) findViewById(R.id.post_author);
-        mTitleView = (TextView) findViewById(R.id.post_title);
         mBodyView = (TextView) findViewById(R.id.post_body);
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
@@ -86,7 +84,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
                 mAuthorView.setText(post.author);
-                mTitleView.setText(post.title);
                 mBodyView.setText(post.body);
             }
 
@@ -287,6 +284,5 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mDatabaseReference.removeEventListener(mChildEventListener);
             }
         }
-
     }
 }

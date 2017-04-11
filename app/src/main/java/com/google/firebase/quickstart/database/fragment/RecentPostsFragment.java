@@ -28,9 +28,7 @@ public class RecentPostsFragment extends Fragment {
 
     private static final String TAG = "RecentPostsFragment";
 
-    // [START define_database_reference]
     private DatabaseReference mDatabase;
-    // [END define_database_reference]
 
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
@@ -43,9 +41,7 @@ public class RecentPostsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
-        // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
@@ -108,7 +104,6 @@ public class RecentPostsFragment extends Fragment {
         mRecycler.setAdapter(mAdapter);
     }
 
-    // [START post_stars_transaction]
     private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -141,7 +136,6 @@ public class RecentPostsFragment extends Fragment {
             }
         });
     }
-    // [END post_stars_transaction]
 
     @Override
     public void onDestroy() {
@@ -156,14 +150,11 @@ public class RecentPostsFragment extends Fragment {
     }
 
     public Query getQuery(DatabaseReference databaseReference) {
-        // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
         Query recentPostsQuery = databaseReference.child("posts")
                 .limitToFirst(100);
-        // [END recent_posts_query]
 
         return recentPostsQuery;
-
     }
 }
