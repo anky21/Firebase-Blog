@@ -50,6 +50,12 @@ public class RecentPostsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -102,6 +108,7 @@ public class RecentPostsFragment extends Fragment {
             }
         };
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
@@ -159,6 +166,7 @@ public class RecentPostsFragment extends Fragment {
     public Query getQuery(DatabaseReference databaseReference) {
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
+        String userUid = getUid();
         Query recentPostsQuery = databaseReference.child("posts")
                 .limitToFirst(100);
 
