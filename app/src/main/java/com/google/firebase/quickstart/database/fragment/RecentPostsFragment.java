@@ -159,8 +159,14 @@ public class RecentPostsFragment extends Fragment {
     public Query getQuery(DatabaseReference databaseReference) {
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("posts")
-                .limitToFirst(100);
+        Query recentPostsQuery;
+        if (!getUid().equals("9SpGbk6ii0Oznemf8V2JmtuGOIF2")
+                && !getUid().equals("Eots9zXVx2NjIgXZ7D49hfGvbVJ2")) {
+            recentPostsQuery = databaseReference.child("posts").orderByChild("uid").equalTo(getUid()).limitToFirst(100);
+        } else {
+            recentPostsQuery = databaseReference.child("posts")
+                    .limitToFirst(5000);
+        }
 
         return recentPostsQuery;
     }
