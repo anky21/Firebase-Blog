@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.database.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,21 +13,20 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public TextView authorView;
     public ImageView starView;
-    public TextView numStarsView;
     public TextView bodyView;
+    public FrameLayout commentCountContainer;
 
     public PostViewHolder(View itemView) {
         super(itemView);
 
         authorView = (TextView) itemView.findViewById(R.id.post_author);
         starView = (ImageView) itemView.findViewById(R.id.star);
-        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
         bodyView = (TextView) itemView.findViewById(R.id.post_body);
+        commentCountContainer = (FrameLayout)itemView.findViewById(R.id.comment_count_container);
     }
 
     public void bindToPost(Post post, View.OnClickListener starClickListener) {
         authorView.setText(post.author);
-        numStarsView.setText(String.valueOf(post.starCount));
         bodyView.setText(post.body);
 
         starView.setOnClickListener(starClickListener);

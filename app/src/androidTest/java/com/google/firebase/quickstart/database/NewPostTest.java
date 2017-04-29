@@ -109,7 +109,7 @@ public class NewPostTest {
 
         // Check that it has zero stars
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.post_num_stars), withText("0"),
+                allOf(withId(R.id.comment_count), withText("0"),
                         withParent(withId(R.id.star_layout)),
                         isDisplayed()));
         textView3.check(matches(withText("0")));

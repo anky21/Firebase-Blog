@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.quickstart.database.PostDetailActivity;
 import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.Utilities;
 import com.google.firebase.quickstart.database.models.Post;
 import com.google.firebase.quickstart.database.viewholder.PostViewHolder;
 
@@ -34,7 +36,9 @@ public class RecentPostsFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
-    public RecentPostsFragment() {}
+    public RecentPostsFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,8 +80,44 @@ public class RecentPostsFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                         intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
                         startActivity(intent);
+                        viewHolder.commentCountContainer.setVisibility(View.INVISIBLE);
                     }
                 });
+
+                mDatabase.child("post-comments").child(postKey).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.v("testing", String.valueOf(dataSnapshot.child("uid").getValue().toString().equals("9SpGbk6ii0Oznemf8V2JmtuGOIF2")));
+//                        if (dataSnapshot.hasChild("uid") && (dataSnapshot.child("uid").getValue().equals("9SpGbk6ii0Oznemf8V2JmtuGOIF2") || dataSnapshot.child("uid").getValue().equals("Eots9zXVx2NjIgXZ7D49hfGvbVJ2"))) {
+//                        if (dataSnapshot.getChildrenCount() > 0) {
+                        if (!dataSnapshot.child("uid").getValue().toString().equals(getUid())) {
+//                        if (dataSnapshot.child("uid").getValue().equals("9SpGbk6ii0Oznemf8V2JmtuGOIF2") || dataSnapshot.child("uid").getValue().equals("Eots9zXVx2NjIgXZ7D49hfGvbVJ2")) {
+                            viewHolder.commentCountContainer.setVisibility(View.VISIBLE);
+                            Utilities.profileBackgroundColor(getContext(), viewHolder.commentCountContainer);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
                 // Determine if the current user has liked this post and set UI accordingly
                 if (model.stars.containsKey(getUid())) {
@@ -92,11 +132,9 @@ public class RecentPostsFragment extends Fragment {
                     public void onClick(View starView) {
                         // Need to write to both places the post is stored
                         DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-//                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
 
                         // Run two transactions
                         onStarClicked(globalPostRef);
-//                        onStarClicked(userPostRef);
                     }
                 });
             }
@@ -122,11 +160,11 @@ public class RecentPostsFragment extends Fragment {
 
                 if (p.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
-                    p.starCount = p.starCount - 1;
+//                    p.starCount = p.starCount - 1;
                     p.stars.remove(getUid());
                 } else {
                     // Star the post and add self to stars
-                    p.starCount = p.starCount + 1;
+//                    p.starCount = p.starCount + 1;
                     p.stars.put(getUid(), true);
                 }
 

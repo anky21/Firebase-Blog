@@ -102,15 +102,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     private void writeNewPost(String userId, String username, String body) {
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
+        // Create new post at /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         Post post = new Post(userId, username, body);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + key, postValues);
-//        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
     }

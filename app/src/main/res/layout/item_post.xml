@@ -17,15 +17,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/star_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/post_author_layout"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/post_author_layout"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:gravity="center_vertical">
+
+
 
             <ImageView
                 android:id="@+id/star"
@@ -36,16 +37,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_toggle_star_outline_24" />
 
-            <TextView
-                android:id="@+id/post_num_stars"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:text="7" />
 
-        </LinearLayout>
 
-        <include layout="@layout/include_post_text"
+        </RelativeLayout>
+
+        <include
+            layout="@layout/include_post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -53,6 +50,14 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp" />
 
+        <FrameLayout
+            android:id="@+id/comment_count_container"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/circle_background">
+        </FrameLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
